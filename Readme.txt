@@ -1,0 +1,1 @@
+A basic BigInt impementation. Written to support all the operations and don't use a precision as when using float type.
