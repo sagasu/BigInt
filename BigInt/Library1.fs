@@ -1,7 +1,7 @@
 ﻿namespace BigInt
 
 type BigInt (n:int) =
-    static member valueAsString n = Array.ofSeq n |> Array.rev |> Seq.fold (fun acc x -> acc + x.ToString()) ""
+    static member valueAsString n = Seq.fold (fun acc x -> acc + x.ToString()) "" n
     member this.Value = n.ToString().ToCharArray() 
                                 |> Seq.map (fun x -> int (x.ToString()));
 
@@ -13,12 +13,19 @@ type BigInt (n:int) =
             ((Seq.append (Array.zeroCreate (lengthDiff * (-1))) this.Value), y.Value)
         else
             (this.Value, y.Value)
+
     member this.add (y:BigInt) = 
+        this.performOperation y (fun a b c -> a + b + c) 0
+    member this.multiply (y:BigInt) = 
+        this.performOperation y (fun a b c -> a * b * c) 1
+
+    member private this.performOperation (y:BigInt) opeartion neutralElement =
             let (a,b) = this.getSameSizeValues (y:BigInt)
             let (rest, anwser) = (Seq.fold (fun ((rest:int), (elements:int List)) ((first:int), (second:int)) -> 
-                                    let sum = first + second + rest
-                                    let newRest = if sum - 10 < 0 then 0 else (sum - 10)
-                                    (newRest, (sum :: elements))) 
-                                 (0, [])
-                                 (Seq.zip a b))
-            BigInt.valueAsString anwser
+                                    System.Console.WriteLine("{0}    {1}     {2}", rest, first, second)
+                                    let sum = (opeartion first second rest) 
+                                    let newRest = if sum - 10 < 0 then 0 else (sum / 10)
+                                    (newRest, (sum % 10 :: elements))) 
+                                 (neutralElement, [])
+                                 (Array.ofSeq (Seq.zip a b) |> Array.rev))
+            BigInt.valueAsString (if rest = 0 then anwser else (rest :: anwser))
