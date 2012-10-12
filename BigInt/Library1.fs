@@ -22,7 +22,6 @@ type BigInt (n:int) =
     member private this.performOperation (y:BigInt) opeartion neutralElement =
             let (a,b) = this.getSameSizeValues (y:BigInt)
             let (rest, anwser) = (Seq.fold (fun ((rest:int), (elements:int List)) ((first:int), (second:int)) -> 
-                                    System.Console.WriteLine("{0}    {1}     {2}", rest, first, second)
                                     let sum = (opeartion first second rest) 
                                     let newRest = if sum - 10 < 0 then 0 else (sum / 10)
                                     (newRest, (sum % 10 :: elements))) 
