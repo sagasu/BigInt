@@ -41,7 +41,7 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Library1.fs" />
+    <Compile Include="BigInt.fs" />
     <None Include="BigInt.fsx" />
   </ItemGroup>
   <PropertyGroup>
